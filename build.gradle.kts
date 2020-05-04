@@ -3,10 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 /* the name of this project, default is the template version but you are free to change these */
-group = "org.openrndr.template"
+group = "com.xemantic.openrndr"
 version = "0.3.12"
 
-val applicationMainClass = "TemplateProgramKt"
+val applicationMainClass = "LiveCameraFilterKt"
 
 /*  Which additional (ORX) libraries should be added to this project. */
 val orxFeatures = setOf(
@@ -92,7 +92,7 @@ val kotlinVersion = "1.3.72"
 
 plugins {
     java
-    kotlin("jvm") version("1.3.71")
+    kotlin("jvm") version("1.3.72")
 }
 
 repositories {

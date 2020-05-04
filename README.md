@@ -1,18 +1,19 @@
-# OPENRNDR template project
-A feature rich template for creating OPENRNDR programs based on Gradle/Kts
+# OPENRNDR camera filter with live coding
 
-The template consists of a configuration for Gradle and an example OPENRNDR program. The Gradle configuration should serve as the
-go-to starting point for writing OPENRNDR-based software.
+Perfect for video conferences in the time of coronavirus pandemic and social distancing.
 
-If you are looking at this from IntelliJ IDEA you can start by expanding the _project_ tab on the left. You will find a template program in `src/main/kotlin/TemplateProgram.kt`
+Features:
 
-You will find some [basic instructions](https://guide.openrndr.org/#/02_Getting_Started_with_OPENRNDR/C00_SetupYourFirstProgram) in the [OPENRNDR guide](https://guide.openrndr.org)
+* everything that OPENRNDR offers for drawing
+* ready to use camera filter shader
+* live coding thanks to kotlin script reloading and shader code reloading
 
-## Gradle tasks
- - `run` runs the TemplateProgram
- - `jar` creates an executable platform specific jar file with all dependencies
- - `zipDistribution` creates a zip file containing the application jar and the data folder
+Check [OPENRNDR](https://openrndr.org/) project.
 
-## Cross builds
+This code is based on [operndr-template](https://github.com/openrndr/openrndr-template) and 
+[orx-olive](https://guide.openrndr.org/#/10_OPENRNDR_Extras/C03_Live_coding?id=live-coding-with-orx-olive)
+ 
+[Read the Guide](https://guide.openrndr.org/) if you are starting with OPENRNDR.
 
-To create runnable jars for a platform different from the platform you use to build one uses `./gradlew jar --PtargetPlatform=<platform>`. The supported platforms are `windows`, `macos`, `linux-x64` and `linux-arm64`. Note that the `linux-arm64` platform will only work with OPENRNDR snapshot builds from master and OPENRNDR 0.3.39 (a future version).
+Works only on Linux! Requires `v4l2loopback` installation. See details in
+[LiveCameraFilter.kt](src/main/kotlin/LiveCodingCameraFilter.kt)

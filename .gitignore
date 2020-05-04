@@ -1,5 +1,9 @@
-application.log
-build
-out
-.idea
-.gradle
+/build
+/out
+/.idea
+/.gradle
+
+/application.log
+/ffmpegOutput.txt
+/ShaderError.txt
+/hs_err_pid*
