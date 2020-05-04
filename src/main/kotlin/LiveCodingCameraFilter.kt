@@ -34,6 +34,7 @@ fun main() = application {
     val virtualCameraWidth = 1920
     val virtualCameraHeight = 1080
 
+    // application becomes the preview window
     configure {
         width = virtualCameraWidth
         height = virtualCameraHeight
