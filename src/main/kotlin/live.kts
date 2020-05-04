@@ -13,7 +13,7 @@ import java.lang.Math.*
             }
             drawer.image(virtualCameraBuffer)
             drawer.fill = ColorRGBa.PINK
-            drawer.circle(width * .2, height * .2, abs(cos(seconds)) * height * 0.2)
+            drawer.circle(width * .2, height * .2, radius = abs(cos(seconds)) * height * 0.2)
         }
     }
 }

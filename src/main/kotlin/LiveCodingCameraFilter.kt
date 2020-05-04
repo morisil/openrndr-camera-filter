@@ -31,11 +31,13 @@ fun main() = application {
     val cameraWidth = 800
     val cameraHeight = 448
 
-    // will define the resolution of your virtual camera
+    val virtualCameraWidth = 1920
+    val virtualCameraHeight = 1080
+
     configure {
-        width = cameraWidth
-        height = cameraHeight
-        hideWindowDecorations = false
+        width = virtualCameraWidth
+        height = virtualCameraHeight
+        hideWindowDecorations = true
         // my second preview screen is below my main screen
         position = IntVector2(0, 1920)
     }
