@@ -58,6 +58,7 @@ fun main() = application {
         realCamera.play()
 
         extend(V4l2Recorder(virtualCameraDevice))
+        //extend(AkvcamRecorder(virtualCameraDevice))
         extend(Olive<Program>())
     }
 }
