@@ -7,6 +7,13 @@ import org.openrndr.draw.renderTarget
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
 
+/**
+ * You might need to do something like:
+ *
+ * ```
+ * echo "1" >/sys/devices/virtual/video4linux/video7/controls/vflip
+ * ```
+ */
 class AkvcamRecorder(v4lDevice: String) : Extension {
 
     override var enabled: Boolean = true
