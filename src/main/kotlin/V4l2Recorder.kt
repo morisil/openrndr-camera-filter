@@ -9,14 +9,18 @@ import org.openrndr.ffmpeg.VideoWriterProfile
 /**
  * The recorder will use `ffmpeg` with `-f v4l2` option for recording. Can be used together with `v4l2loopback`.
  *
- * @param v4lDevice the v4l device used for recording, should be writeable.
- * @param pixelFormat `rgb24` by default, will make it compatible with many clients like Chrome browser
- *                      and use less CPU for transcoding. It can be also yuv420p, etc.
- *                      see ffmpeg pix_fmt documentation.
+ * @param v4lDevice       the `v4l` device used for recording, should be writeable.
+ * @param pixelFormat      `rgb24` by default, will make it compatible with many clients like Chrome browser
+ *                          and use less CPU for transcoding. It can be also yuv420p, etc.
+ *                          see ffmpeg pix_fmt documentation.
+ * @param inputFrameRate  typically screen refresh rate.
+ * @param outputFrameRate output camera refresh rate
  */
 class V4l2Recorder(
     private val v4lDevice: String,
-    private val pixelFormat: String = "rgb24"
+    private val pixelFormat: String = "rgb24",
+    private val inputFrameRate: Int = 60,
+    private val outputFrameRate: Double = 30.0
 ) : Extension {
 
     override var enabled: Boolean = true
@@ -32,10 +36,16 @@ class V4l2Recorder(
         videoWriter = VideoWriter.create()
             .profile(object: VideoWriterProfile() {
                 override fun arguments(): Array<String> {
-                    return arrayOf("-vf", "vflip", "-pix_fmt", pixelFormat, "-f", "v4l2")
+                    return arrayOf(
+                        "-vf", "vflip",
+                        "-pix_fmt", pixelFormat,
+                        "-r", outputFrameRate.toBigDecimal().toPlainString(),
+                        "-f", "v4l2"
+                    )
                 }
             })
             .size(program.width, program.height)
+            .frameRate(inputFrameRate)
             .output(v4lDevice)
             .start()
     }
