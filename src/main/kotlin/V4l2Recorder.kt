@@ -6,39 +6,52 @@ import org.openrndr.draw.renderTarget
 import org.openrndr.ffmpeg.VideoWriter
 import org.openrndr.ffmpeg.VideoWriterProfile
 
-class V4l2Recorder(private val virtualCameraDevice: String) : Extension {
+/**
+ * The recorder will use `ffmpeg` with `-f v4l2` option for recording. Can be used together with `v4l2loopback`.
+ *
+ * @param v4lDevice the v4l device used for recording, should be writeable.
+ * @param pixelFormat `rgb24` by default, will make it compatible with many clients like Chrome browser
+ *                      and use less CPU for transcoding. It can be also yuv420p, etc.
+ *                      see ffmpeg pix_fmt documentation.
+ */
+class V4l2Recorder(
+    private val v4lDevice: String,
+    private val pixelFormat: String = "rgb24"
+) : Extension {
 
     override var enabled: Boolean = true
 
-    private lateinit var virtualCameraRenderTarget: RenderTarget
+    private lateinit var videoRenderTarget: RenderTarget
 
-    private lateinit var virtualCameraWriter: VideoWriter
+    private lateinit var videoWriter: VideoWriter
 
     override fun setup(program: Program) {
-        virtualCameraRenderTarget = renderTarget(program.width, program.height) {
+        videoRenderTarget = renderTarget(program.width, program.height) {
             colorBuffer()
         }
-        virtualCameraWriter = VideoWriter.create()
+        videoWriter = VideoWriter.create()
             .profile(object: VideoWriterProfile() {
                 override fun arguments(): Array<String> {
-                    return arrayOf("-vf", "vflip", "-pix_fmt", "yuv420p", "-f", "v4l2")
+                    return arrayOf("-vf", "vflip", "-pix_fmt", pixelFormat, "-f", "v4l2")
                 }
             })
-            .size(program.width, program.height).output(virtualCameraDevice).start()
+            .size(program.width, program.height)
+            .output(v4lDevice)
+            .start()
     }
 
     override fun beforeDraw(drawer: Drawer, program: Program) {
-        virtualCameraRenderTarget.bind()
+        videoRenderTarget.bind()
         program.backgroundColor?.let {
             drawer.background(it)
         }
     }
 
     override fun afterDraw(drawer: Drawer, program: Program) {
-        virtualCameraRenderTarget.unbind()
-        val buffer = virtualCameraRenderTarget.colorBuffer(0)
+        videoRenderTarget.unbind()
+        val buffer = videoRenderTarget.colorBuffer(0)
         drawer.image(buffer)
-        virtualCameraWriter.frame(buffer)
+        videoWriter.frame(buffer)
     }
 
 }

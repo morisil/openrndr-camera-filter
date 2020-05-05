@@ -42,6 +42,7 @@ fun main() = application {
         // my second preview screen is below my main screen
         position = IntVector2(0, 1920)
     }
+
     program(LiveCodingCameraProgram()) {
         realCamera = VideoPlayerFFMPEG.fromDevice(
             cameraDevice,
@@ -49,7 +50,7 @@ fun main() = application {
             imageWidth = cameraWidth,
             imageHeight = cameraHeight
         )
-        virtualCameraBuffer = colorBuffer(width, height, format = ColorFormat.RGB, type = ColorType.FLOAT16)
+        virtualCameraBuffer = colorBuffer(width, height, format = ColorFormat.RGB, type = ColorType.UINT8)
         virtualCameraBuffer.flipV = true
         shader = Filter(watcher = filterWatcherFromUrl( "file:src/main/resources/camera.frag"))
         shader.parameters["resolution"] = Vector2(width.toDouble(), height.toDouble())
