@@ -31,14 +31,14 @@ fun main() = application {
     val cameraWidth = 800
     val cameraHeight = 448
 
-    val virtualCameraWidth = 1920
-    val virtualCameraHeight = 1080
+    val virtualCameraWidth = 800
+    val virtualCameraHeight = 448
 
     // application becomes the preview window
     configure {
         width = virtualCameraWidth
         height = virtualCameraHeight
-        hideWindowDecorations = true
+        hideWindowDecorations = false
         // my second preview screen is below my main screen
         position = IntVector2(0, 1920)
     }
@@ -50,6 +50,9 @@ fun main() = application {
             imageWidth = cameraWidth,
             imageHeight = cameraHeight
         )
+        // TODO replace with 16
+        previousVirtualCameraBuffer = colorBuffer(width, height, format = ColorFormat.RGB, type = ColorType.UINT8)
+        previousVirtualCameraBuffer.flipV = true
         virtualCameraBuffer = colorBuffer(width, height, format = ColorFormat.RGB, type = ColorType.UINT8)
         virtualCameraBuffer.flipV = true
         shader = Filter(watcher = filterWatcherFromUrl( "file:src/main/resources/camera.frag"))
@@ -65,6 +68,13 @@ fun main() = application {
 
 class LiveCodingCameraProgram : Program() {
     lateinit var realCamera: VideoPlayerFFMPEG
+    lateinit var previousVirtualCameraBuffer: ColorBuffer
     lateinit var virtualCameraBuffer: ColorBuffer
     lateinit var shader: Filter
+
+    fun swapVirtualCameraBuffers() {
+        var buffer = previousVirtualCameraBuffer
+        previousVirtualCameraBuffer = virtualCameraBuffer
+        virtualCameraBuffer = buffer
+    }
 }
